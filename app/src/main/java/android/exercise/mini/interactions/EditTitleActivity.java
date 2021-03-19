@@ -21,6 +21,8 @@ public class EditTitleActivity extends AppCompatActivity {
   // in onCreate() set `this.isEditing` to `true` once the user starts editing, set to `false` once done editing
   // in onBackPressed() check `if(this.isEditing)` to understand what to do
 
+  private boolean isEditing = false;
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -54,6 +56,14 @@ public class EditTitleActivity extends AppCompatActivity {
 
       to complete (1.) & (2.), start by just changing visibility. only add animations after everything else is ready
        */
+
+      fabStartEdit.setVisibility(View.INVISIBLE);
+      fabEditDone.setVisibility(View.VISIBLE);
+
+      textViewTitle.setVisibility(View.INVISIBLE);
+      editTextTitle.setVisibility(View.VISIBLE);
+
+      this.isEditing = true;
     });
 
     // handle clicks on "done edit"
@@ -69,6 +79,20 @@ public class EditTitleActivity extends AppCompatActivity {
 
       to complete (1.) & (2.), start by just changing visibility. only add animations after everything else is ready
        */
+      fabEditDone.setVisibility(View.INVISIBLE);
+      fabStartEdit.setVisibility(View.VISIBLE);
+
+
+      String user_input = editTextTitle.getText().toString();
+      textViewTitle.setText(user_input);
+
+      editTextTitle.setVisibility(View.INVISIBLE);
+      textViewTitle.setVisibility(View.VISIBLE);
+
+      editTextTitle.clearFocus();
+      textViewTitle.requestFocus();
+
+      this.isEditing = false;
     });
   }
 
@@ -90,5 +114,23 @@ public class EditTitleActivity extends AppCompatActivity {
     to work with views, you will need to find them first.
     to find views call `findViewById()` in a same way like in `onCreate()`
      */
+    // find all views
+    FloatingActionButton fabStartEdit = findViewById(R.id.fab_start_edit);
+    FloatingActionButton fabEditDone = findViewById(R.id.fab_edit_done);
+    TextView textViewTitle = findViewById(R.id.textViewPageTitle);
+    EditText editTextTitle = findViewById(R.id.editTextPageTitle);
+
+    if(this.isEditing) {
+      editTextTitle.setVisibility(View.INVISIBLE);
+      textViewTitle.setVisibility(View.VISIBLE);
+
+      fabEditDone.setVisibility(View.INVISIBLE);
+      fabStartEdit.setVisibility(View.VISIBLE);
+
+      this.isEditing = false;
+    }
+    else {
+      super.onBackPressed();
+    }
   }
 }
